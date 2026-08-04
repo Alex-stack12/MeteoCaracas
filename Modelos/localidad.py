@@ -30,7 +30,6 @@ class Localidad:
     def __str__(self):
         """Texto para mostrar la localidad."""
         if self.tiene_coordenadas():
-            return f"{self.nombre} (Lat: {self.latitud}, Lon: {self.longitud})"
-        return f"{self.nombre} (sin coordenadas)"
-
+            return self.nombre + " (Lat: " + str(self.latitud) + ", Lon: " + str(self.longitud) + ")" 
+        return self.nombre + " (Sin coordenadas)"
     
