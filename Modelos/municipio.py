@@ -11,7 +11,7 @@ class Municipio:
             self.localidades.append(localidad)
 
             def obtener_localidades_con_coordenadas(self):
-                """Devuelve la lista de localidades que tienen coordenadas (no nulas)."""
+                """Devuelve la lista de localidades que tienen coordenadas (no nulls)."""
                 resultado = []
                 for loc in self.localidades:
                     if loc.coordenadas():
@@ -19,7 +19,7 @@ class Municipio:
                 return resultado
 
             def obtener_localidades_sin_coordenadas(self):
-                """Devuelve la lista de localidades que no tienen coordenadas (nulas)."""
+                """Devuelve la lista de localidades que no tienen coordenadas (nulls)."""
                 resultado = []
                 for loc in self.localidades:
                     if not loc.tiene_coordenadas():
@@ -27,7 +27,7 @@ class Municipio:
                 return resultado
 
             def obtener_localidades_validas(self):
-                """Devuelve las localidades con coorddnadas validas dentro de Caracas."""
+                """Devuelve las localidades con coordenadas validas dentro de Caracas."""
                 resultado = []
                 for loc in self.localidades:
                     if loc.coordenadas_validas():
