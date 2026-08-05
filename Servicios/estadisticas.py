@@ -23,9 +23,10 @@ class GestorEstadisticas:
     def registrar_consulta(self, municipio, localidad, clima):
         """Guarda la consulta. Si la localidad ya estaba, actualiza su clima."""
         self.veces_consultadas = self.veces_consultadas + 1
+        
         for registro in self.consultas_realizadas:
             if registro.es_la_misma(municipio, localidad):
-                registro.clima == clima
+                registro.clima = clima
                 return
 
         nuevo = RegistroConsulta(municipio, localidad, clima)
@@ -33,7 +34,7 @@ class GestorEstadisticas:
 
     def mostrar_ranking_temperatura(self):
         """Muestra la localidad mas calida y la mas fria de la sesion."""
-        if len(self.consultas_realizadas) = 0:
+        if len(self.consultas_realizadas) == 0:
             print("\nTodavia no se han hecho consultas en esta sesion.")
             return
 
@@ -41,7 +42,7 @@ class GestorEstadisticas:
         mas_fria = self.consultas_realizadas[0]
 
         for registro in self.consultas_realizadas:
-            if registro.clima.temperatua > mas_calida.clima.temperatura:
+            if registro.clima.temperatura > mas_calida.clima.temperatura:
                 mas_calida = registro
             if registro.clima.temperatura < mas_fria.clima.temperatura:
                 mas_fria = registro
@@ -50,14 +51,23 @@ class GestorEstadisticas:
         print("Mas calida: " + mas_calida.localidad + " (" + mas_calida.municipio +
               ") con " + str(mas_calida.clima.temperatura) + " C")
         print("Mas fria:   " + mas_fria.localidad + " (" + mas_fria.municipio +
-              ") con " + mas_fria.clima.temperatura + " C")
+              ") con " + str(mas_fria.clima.temperatura) + " C")
 
         if len(self.consultas_realizadas) == 1:
             print("(Solo se ha consultado una localidad, por eso se repite)")
 
-   def mostrar_promedio_general(self):
+    def mostrar_promedio_general(self):
         """Muestra la temperatura promedio de las localidades consultadas."""
         if len(self.consultas_realizadas) == 0:
             print("\nTodavia no se han hecho consultas en esta sesion.")
             return
 
+        suma = 0
+        for registro in self.consultas_realizadas:
+            suma = suma + registro.clima.temperatura
+        promedio = suma / len(self.consultas_realizadas)
+
+        print("\n--- PROMEDIO GENERAL DE LA SESION ---")
+        print("Localidades distintas consultadas: " + str(len(self.consultas_realizadas)))
+        print("Veces que se consulto el clima:    " + str(self.veces_consultadas))
+        print("Temperatura promedio: " + str(round(promedio, 2)) + " C")
