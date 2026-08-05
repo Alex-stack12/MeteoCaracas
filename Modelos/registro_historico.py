@@ -11,6 +11,6 @@ class RegistroHistorico:
 
     def __str__(self):
         """Texto con los datos del dia."""
-        return (str(self.fecha) + ": " + str(self.temperatura) + " C, " +
+        return (str(self.fecha) + " : " + str(self.temperatura) + " C, " +
                 str(self.humedad) + " %, " + str(self.precipitacion) + " mm, " +
-                str(self.viento) + " km/h")
+                str(self.viento) + " km/h ")
