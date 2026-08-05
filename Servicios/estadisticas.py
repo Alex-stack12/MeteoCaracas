@@ -80,26 +80,24 @@ class GestorEstadisticas:
 
         total_sin = 0
         for muni in municipios:
-            sin_coords = muni.obtner_localidades_sin_coordenadas()
+            sin_coords = muni.obtener_localidades_sin_coordenadas()
             total_sin = total_sin + len(sin_coords)
-            print("\nMunicipio: " + muni.nombre + " (sin coordenadas: " + len(sin_coords) + ")")
-            
+            print("\nMunicipio: " + muni.nombre + " (sin coordenadas: " + str(len(sin_coords)) + ")")
             if len(sin_coords) > 0:
                 for loc in sin_coords:
                     print("  - " + loc.nombre)
-            else
+            else:
                 print("  - (Todas las localidades tienen coordenadas)")
 
         print("\n==================================================")
         print("   LOCALIDADES CON COORDENADAS FUERA DE CARACAS")
         print("==================================================")
 
-            total_fuera = 0
-            
-        for mni in municipios:
+        total_fuera = 0
+        for muni in municipios:
             fuera = []
             for loc in muni.localidades:
-                if loc.tiene_coordenadas and not loc.coordenadas_validas():
+                if loc.tiene_coordenadas() and not loc.coordenadas_validas():
                     fuera.append(loc)
             total_fuera = total_fuera + len(fuera)
             print("\nMunicipio: " + muni.nombre + " (fuera del area: " + str(len(fuera)) + ")")
@@ -113,6 +111,6 @@ class GestorEstadisticas:
         print("\n--------------------------------------------------")
         print("Total sin coordenadas: " + str(total_sin))
         print("Total con coordenadas fuera del Area Metropolitana: " + str(total_fuera))
-        print("Estas ultimas tampoco se pueden consultar, aunque el archivo)
+        print("Estas ultimas tampoco se pueden consultar, aunque el archivo")
         print("traiga un numero en latitud y longitud.")
         print("==================================================")
