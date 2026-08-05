@@ -36,8 +36,8 @@ class AnalizadorHistorico:
                     arriba = 1
             eje.set_ylim(abajo, arriba)
 
-        def ano_extremo(self, columna, buscar_el_mayor):
-        """Devuelve el año con el valor mayor o menor de esa columna.""
+    def ano_extremo(self, columna, buscar_el_mayor):
+        """Devuelve el ano con el valor mayor o menor de esa columna."""
         if columna.count() == 0:
             return "sin datos"
         if buscar_el_mayor:
