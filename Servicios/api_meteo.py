@@ -14,20 +14,32 @@ class ServicioMeteo:
         """Guarda las direcciones de la API de clima actual e historico."""
         self.url_actual = "https://api.open-meteo.com/v1/forecast"
         self.url_historico = "https://archive-api.open-meteo.com/v1/archive"
+
     def pedir_datos(self, url, parametros, segundos):
-    """Consulta la API y devuelve los datos, reintentando si falla."""
-    intento = 1
-    while intento <= self.INTENTOS:
-        try:
-            respuesta = requests.get(url, params=parametros, timeout=segundos)
-            respuesta.raise_for_status()
-            return respuesta.json()
-        except Exception as error:
-            if intento < self.INTENTOS:
-                print("  Fallo la consulta. Reintentando (" +
-                      str(intento + 1) + " de " + str(self.INTENTOS) + ")...")
-                time.sleep(1)
-                intento = intento + 1
-            else:
-                print("Error al consultar la API:", error)
-    return None
+        """Consulta la API y devuelve los datos, reintentando si falla."""
+        intento = 1
+        while intento <= self.INTENTOS:
+            try:
+                respuesta = requests.get(url, params=parametros, timeout=segundos)
+                respuesta.raise_for_status()
+                return respuesta.json()
+            except Exception as error:
+                if intento < self.INTENTOS:
+                    print("  Fallo la consulta. Reintentando (" +
+                          str(intento + 1) + " de " + str(self.INTENTOS) + ")...")
+                    time.sleep(1)
+                else:
+                    print("Error al consultar la API:", error)
+            intento = intento + 1
+        return None
+
+    def obtener_clima_actual(self, lat, lon):
+        """Consulta el clima actual y devuelve un objeto ClimaActual o None."""
+        parametros = {
+            "latitude": lat,
+            "longitude": lon,
+            "current": "temperature_2m,relative_humidity_2m,wind_speed_10m,weather_code"
+        }
+        datos = self.pedir_datos(self.url_actual, parametros, 20)
+        if datos is None:
+            return None
