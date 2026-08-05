@@ -71,3 +71,48 @@ class GestorEstadisticas:
         print("Localidades distintas consultadas: " + str(len(self.consultas_realizadas)))
         print("Veces que se consulto el clima:    " + str(self.veces_consultadas))
         print("Temperatura promedio: " + str(round(promedio, 2)) + " C")
+
+    def mostrar_cobertura_geografica(self, municipios):
+        """Muestra las localidades sin coordenadas y las que caen fuera de Caracas."""
+        print("\n==================================================")
+        print("   LOCALIDADES SIN COORDENADAS REGISTRADAS (NULL)")
+        print("==================================================")
+
+        total_sin = 0
+        for muni in municipios:
+            sin_coords = muni.obtner_localidades_sin_coordenadas()
+            total_sin = total_sin + len(sin_coords)
+            print("\nMunicipio: " + muni.nombre + " (sin coordenadas: " + len(sin_coords) + ")")
+            
+            if len(sin_coords) > 0:
+                for loc in sin_coords:
+                    print("  - " + loc.nombre)
+            else
+                print("  - (Todas las localidades tienen coordenadas)")
+
+        print("\n==================================================")
+        print("   LOCALIDADES CON COORDENADAS FUERA DE CARACAS")
+        print("==================================================")
+
+            total_fuera = 0
+            
+        for mni in municipios:
+            fuera = []
+            for loc in muni.localidades:
+                if loc.tiene_coordenadas and not loc.coordenadas_validas():
+                    fuera.append(loc)
+            total_fuera = total_fuera + len(fuera)
+            print("\nMunicipio: " + muni.nombre + " (fuera del area: " + str(len(fuera)) + ")")
+            if len(fuera) > 0:
+                for loc in fuera:
+                    print("  - " + loc.nombre + " (Lat " + str(loc.latitud) +
+                          ", Lon " + str(loc.longitud) + ")")
+            else:
+                print("  - (Ninguna)")
+
+        print("\n--------------------------------------------------")
+        print("Total sin coordenadas: " + str(total_sin))
+        print("Total con coordenadas fuera del Area Metropolitana: " + str(total_fuera))
+        print("Estas ultimas tampoco se pueden consultar, aunque el archivo)
+        print("traiga un numero en latitud y longitud.")
+        print("==================================================")
