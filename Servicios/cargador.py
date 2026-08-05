@@ -35,3 +35,42 @@ class CargadorDatos:
             municipios.append(municipio)
 
         return municipios
+
+    def mostrar_reporte_inicial(self, municipios):
+        """Muestra el reporte de carga pedido en el requerimiento 1."""
+        print()
+        print("==================================================")
+        print("        REPORTE INICIAL DE CARGA DE DATOS")
+        print("==================================================")
+
+        total_general = 0
+        total_conocidas = 0
+
+        for muni in municipios:
+            total = len(muni.localidades)
+            con_coords = len(muni.obtener_localidades_con_coordenadas())
+            sin_coords = len(muni.obtener_localidades_sin_coordenadas())
+            validas = len(muni.obtener_localidades_validas())
+
+            if total > 0:
+                porcentaje = con_coords / total * 100
+            else:
+                porcentaje = 0
+
+            total_general = total_general + total
+            total_conocidas = total_conocidas + con_coords
+
+            print()
+            print("Municipio: " + muni.nombre)
+            print("  a. Localidades cargadas: " + str(total))
+            print("  b. Con coordenadas: " + str(con_coords))
+            print("  c. Sin coordenadas: " + str(sin_coords))
+            print("  d. Porcentaje con coordenadas: " + str(round(porcentaje, 1)) + " %")
+            print("  (Validas dentro de Caracas: " + str(validas) + ")")
+
+        print()
+        print("--------------------------------------------------")
+        print("Total de localidades cargadas: " + str(total_general))
+        print("Total con coordenadas: " + str(total_conocidas))
+        print("==================================================")
+        print()
