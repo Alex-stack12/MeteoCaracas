@@ -8,3 +8,9 @@ class RegistroHistorico:
         self.humedad = humedad
         self.precipitacion = precipitacion
         self.viento = viento
+
+    def __str__(self):
+        """Texto con los datos del dia."""
+        return (str(self.fecha) + ": " + str(self.temperatura) + " C, " +
+                str(self.humedad) + " %, " + str(self.precipitacion) + " mm, " +
+                str(self.viento) + " km/h")
