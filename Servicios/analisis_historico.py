@@ -35,3 +35,49 @@ class AnalizadorHistorico:
                 if arriba <= 0:
                     arriba = 1
             eje.set_ylim(abajo, arriba)
+
+        def ano_extremo(self, columna, buscar_el_mayor):
+        """Devuelve el año con el valor mayor o menor de esa columna.""
+        if columna.count() == 0:
+            return "sin datos"
+        if buscar_el_mayor:
+            return str(columna.idxmax())
+        return str(columna.idxmin())
+
+    def generar_reporte_y_grafico(self, localidad, registros):
+        """Muestra promedios y extremos, y guarda el grafico. Devuelve True o False."""
+        if len(registros) == 0:
+            print("La lista de registros historicos esta vacia.")
+            return False
+        fechas = []
+        temperaturas = []
+        humedades = []
+        precipitaciones = []
+        vientos = []
+        for r in registros:
+            fechas.append(r.fecha)
+            temperaturas.append(r.temperatura)
+            humedades.append(r.humedad)
+            precipitaciones.append(r.precipitacion)
+            vientos.append(r.viento)
+
+        df = pd.DataFrame({
+            "Fecha": fechas,
+            "Temperatura": temperaturas,
+            "Humedad": humedades,
+            "Precipitacion": precipitaciones,
+            "Viento": vientos
+        })
+        df["Fecha"] = pd.to_datetime(df["Fecha"])
+        df["Ano"] = df["Fecha"].dt.year
+        df["Mes"] = df["Fecha"].dt.month
+        dias_totales = len(df)
+        dias_sin_temp = int(df["Temperatura"].isna().sum())
+        dias_por_mes = df.groupby(["Ano", "Mes"])["Fecha"].count()
+        primer_mes = dias_por_mes.index[0]
+        ultimo_mes = dias_por_mes.index[len(dias_por_mes) - 1]
+        meses_incompletos = []
+        if dias_por_mes.loc[primer_mes] < 28:
+            meses_incompletos.append(str(primer_mes[1]) + "/" + str(primer_mes[0]))
+        if ultimo_mes != primer_mes and dias_por_mes.loc[ultimo_mes] < 28:
+            meses_incompletos.append(str(ultimo_mes[1]) + "/" + str(ultimo_mes[0]))
