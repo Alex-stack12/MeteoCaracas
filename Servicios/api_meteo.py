@@ -64,4 +64,48 @@ class ServicioMeteo:
             "timezone": "auto"
         }
 
-        
+        registros = []
+        datos = self.pedir_datos(self.url_historico, parametros, 30)
+        if datos is None:
+            return registros
+
+        try:
+            diario = datos.get("daily", {})
+
+            if not diario or "time" not in diario:
+                return registros
+
+            tiempos = diario.get("time", [])
+            temperaturas = diario.get("temperature_2m_mean", [])
+            humedades = diario.get("relative_humidity_2m_mean", [])
+            precipitaciones = diario.get("precipitation_sum", [])
+            vientos = diario.get("wind_speed_10m_max", [])
+
+            i = 0
+            while i < len(tiempos):
+                registro = RegistroHistorico(
+                    tiempos[i],
+                    self.valor(temperaturas, i),
+                    self.valor(humedades, i),
+                    self.valor(precipitaciones, i),
+                    self.valor(vientos, i)
+                )
+                registros.append(registro)
+                i = i + 1
+
+            return registros
+
+        except Exception as error:
+            print("Error al procesar el historico:", error)
+
+        return registros
+
+    def valor(self, lista, i):
+        """Devuelve el valor de la lista en la posicion i, o None si no existe.
+
+        Se devuelve None y no 0 a proposito: un dia sin dato no es un dia
+        de 0 grados. Si se guardara 0 se danarian los promedios.
+        """
+        if i < len(lista):
+            return lista[i]
+        return None
