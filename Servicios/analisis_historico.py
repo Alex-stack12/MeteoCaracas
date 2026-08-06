@@ -82,21 +82,21 @@ class AnalizadorHistorico:
         if ultimo_mes != primer_mes and dias_por_mes.loc[ultimo_mes] < 28:
             meses_incompletos.append(str(ultimo_mes[1]) + "/" + str(ultimo_mes[0]))
 
-        pruint("\n==================================================")
-        print("      ANALISIS HISTORICO - " + localida.upper())  # Error: localida en vez de localidad
+        print("\n==================================================")
+        print("      ANALISIS HISTORICO - " + localidad.upper())
         print("==================================================")
         print("Dias recibidos de la API: " + str(dias_totales))
-        if dias_sin_temp > 0
-            print("Dias sin temperatura registrada: " + str(dias_sin_temp) +  # Error: falta : en el if
+        if dias_sin_temp > 0:
+            print("Dias sin temperatura registrada: " + str(dias_sin_temp) +
                   " (se excluyen de los promedios)")
         if len(meses_incompletos) > 0:
-            print("Aviso: estos meses estan incompletos porque el rango)  # Error: falta cerrar comilla
+            print("Aviso: estos meses estan incompletos porque el rango")
             print("empieza o termina a mitad de mes: " + ", ".join(meses_incompletos))
             print("Su precipitacion acumulada es menor de lo que seria el mes entero.")
         print("==================================================")
 
         mensual = df.groupby(["Ano", "Mes"]).agg({
-            "Temperatura": "meam",  # Error: "meam" en vez de "mean"
+            "Temperatura": "mean",
             "Humedad": "mean",
             "Precipitacion": "sum",
             "Viento": "mean"
@@ -107,7 +107,7 @@ class AnalizadorHistorico:
             print("Ano " + str(indice[0]) + ", Mes " + str(indice[1]) + ":")
             print("  - Temperatura promedio:    " + self.texto_numero(fila["Temperatura"], "C"))
             print("  - Humedad promedio:        " + self.texto_numero(fila["Humedad"], "%"))
-            print("  - Precipitacion acumulada: " + self.texto_numero(fila["Precepitacion"], "mm"))  # Error: Precepitacion
+            print("  - Precipitacion acumulada: " + self.texto_numero(fila["Precipitacion"], "mm"))
             print("  - Viento promedio:         " + self.texto_numero(fila["Viento"], "km/h"))
             print("  ----------------------------------------------")
 
@@ -198,10 +198,10 @@ class AnalizadorHistorico:
         nombres_meses = ["Ene", "Feb", "Mar", "Abr", "May", "Jun",
                          "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"]
 
-        figura, ejes = plt.subpolts(2, 2, figsize=(12, 8))  # Error: subpolts en vez de subplots
+        figura, ejes = plt.subplots(2, 2, figsize=(12, 8))
         figura.suptitle("Evolucion historica mensual por ano - " + localidad)
         posiciones = [ejes[0][0], ejes[0][1], ejes[1][0], ejes[1][1]]
-        marcadors = ["o", "s", "^", "D", "v", "P"]  # Error: marcadors
+        marcadores = ["o", "s", "^", "D", "v", "P"]
         estilos = ["-", "--", ":", "-.", "--", ":"]
 
         i = 0
@@ -214,7 +214,7 @@ class AnalizadorHistorico:
             for ano in anos:
                 datos_ano = mensual.loc[ano]
                 eje.plot(datos_ano.index, datos_ano[columna],
-                         marker=marcadors[j % len(marcadores)],  # Error: mezcla marcadors y marcadores
+                         marker=marcadores[j % len(marcadores)],
                          linestyle=estilos[j % len(estilos)],
                          linewidth=1.6, markersize=5, alpha=0.85, label=str(ano))
                 for v in datos_ano[columna]:
@@ -251,7 +251,7 @@ class AnalizadorHistorico:
         lineas, etiquetas = posiciones[0].get_legend_handles_labels()
         figura.legend(lineas, etiquetas, loc="upper right", fontsize=9)
 
-        plt.tight_layut(rect=[0, 0, 1, 0.95])  # Error: tight_layut en vez de tight_layout
+        plt.tight_layout(rect=[0, 0, 1, 0.95])
         plt.savefig(ruta)
         print("  Grafico guardado en: " + ruta)
         print("==================================================\n")
