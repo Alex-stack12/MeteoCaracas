@@ -96,106 +96,106 @@ class MenuInterfaz:
         self.procesar_consulta_clima(municipio.nombre, validas[indice])
 
         def busqueda_directa(self):
-    """Busca localidades validas por nombre y consulta la elegida."""
-    criterio = input("\nNombre (o parte) de la localidad: ")
-    par = self.seleccionar_localidad_valida(criterio)
-    if par is None:
-        return
+         """Busca localidades validas por nombre y consulta la elegida."""
+        criterio = input("\nNombre (o parte) de la localidad: ")
+        par = self.seleccionar_localidad_valida(criterio)
+        if par is None:
+            return
 
-    self.procesar_consulta_clima(par[0], par[1])
+        self.procesar_consulta_clima(par[0], par[1])
 
-def quitar_acentos(self, texto):
-    """Devuelve el texto en minusculas, sin acentos ni dieresis."""
-    texto = texto.lower()
-    con_acento = "aeiouun"
-    acentuadas = ["á", "é", "í", "ó", "ú", "ü", "ñ"]
-    i = 0
-    while i < len(acentuadas):
-        texto = texto.replace(acentuadas[i], con_acento[i])
-        i = i + 1
-    return texto
+    def quitar_acentos(self, texto):
+        """Devuelve el texto en minusculas, sin acentos ni dieresis."""
+        texto = texto.lower()
+        con_acento = "aeiouun"
+        acentuadas = ["á", "é", "í", "ó", "ú", "ü", "ñ"]
+        i = 0
+        while i < len(acentuadas):
+            texto = texto.replace(acentuadas[i], con_acento[i])
+            i = i + 1
+        return texto
 
-def buscar_coincidencias(self, criterio):
-    """Devuelve una lista de pares [municipio, localidad] con coordenadas validas."""
-    coincidencias = []
-    for muni in self.municipios:
-        for loc in muni.obtener_localidades_validas():
-            if criterio in self.quitar_acentos(loc.nombre):
-                coincidencias.append([muni.nombre, loc])
-    return coincidencias
+    def buscar_coincidencias(self, criterio):
+        """Devuelve una lista de pares [municipio, localidad] con coordenadas validas."""
+        coincidencias = []
+        for muni in self.municipios:
+            for loc in muni.obtener_localidades_validas():
+                if criterio in self.quitar_acentos(loc.nombre):
+                    coincidencias.append([muni.nombre, loc])
+        return coincidencias
 
-def buscar_todas_las_coincidencias(self, criterio):
-    """Devuelve los pares [municipio, localidad] que coinciden, validos o no."""
-    coincidencias = []
-    for muni in self.municipios:
-        for loc in muni.localidades:
-            if criterio in self.quitar_acentos(loc.nombre):
-                coincidencias.append([muni.nombre, loc])
-    return coincidencias
+    def buscar_todas_las_coincidencias(self, criterio):
+        """Devuelve los pares [municipio, localidad] que coinciden, validos o no."""
+        coincidencias = []
+        for muni in self.municipios:
+            for loc in muni.localidades:
+                if criterio in self.quitar_acentos(loc.nombre):
+                    coincidencias.append([muni.nombre, loc])
+        return coincidencias
 
-def explicar_sin_resultados(self, criterio):
-    """Explica por que no hubo resultados validos para el criterio buscado."""
-    todas = self.buscar_todas_las_coincidencias(criterio)
+    def explicar_sin_resultados(self, criterio):
+        """Explica por que no hubo resultados validos para el criterio buscado."""
+        todas = self.buscar_todas_las_coincidencias(criterio)
 
-    if len(todas) == 0:
-        print("No existe ninguna localidad que coincida con '" + criterio + "'.")
-        return
-    print("\nSe encontraron localidades con ese nombre, pero ninguna se puede consultar:")
-    for par in todas:
-        loc = par[1]
-        if not loc.tiene_coordenadas():
-            motivo = "no tiene coordenadas registradas en el archivo"
-        else:
-            motivo = ("sus coordenadas (Lat " + str(loc.latitud) + ", Lon " +
-                      str(loc.longitud) + ") caen fuera del Area Metropolitana de Caracas")
-        print("  - " + loc.nombre + " (" + par[0] + "): " + motivo + ".")
-    print("Por eso el sistema no consulta el clima de esas localidades.")
+        if len(todas) == 0:
+            print("No existe ninguna localidad que coincida con '" + criterio + "'.")
+            return
+        print("\nSe encontraron localidades con ese nombre, pero ninguna se puede consultar:")
+        for par in todas:
+            loc = par[1]
+            if not loc.tiene_coordenadas():
+                motivo = "no tiene coordenadas registradas en el archivo"
+            else:
+                motivo = ("sus coordenadas (Lat " + str(loc.latitud) + ", Lon " +
+                          str(loc.longitud) + ") caen fuera del Area Metropolitana de Caracas")
+            print("  - " + loc.nombre + " (" + par[0] + "): " + motivo + ".")
+        print("Por eso el sistema no consulta el clima de esas localidades.")
 
-def seleccionar_localidad_valida(self, criterio):
-    """Muestra las coincidencias y deja al usuario elegir una. Devuelve el par o None."""
-    criterio = self.quitar_acentos(criterio.strip())
-    if criterio == "":
-        print("Debe ingresar al menos una letra.")
-        return None
+    def seleccionar_localidad_valida(self, criterio):
+        """Muestra las coincidencias y deja al usuario elegir una. Devuelve el par o None."""
+        criterio = self.quitar_acentos(criterio.strip())
+        if criterio == "":
+            print("Debe ingresar al menos una letra.")
+            return None
 
-    coincidencias = self.buscar_coincidencias(criterio)
-    if len(coincidencias) == 0:
-        self.explicar_sin_resultados(criterio)
-        return None
+        coincidencias = self.buscar_coincidencias(criterio)
+        if len(coincidencias) == 0:
+            self.explicar_sin_resultados(criterio)
+            return None
 
-    print("\n--- RESULTADOS PARA '" + criterio + "' ---")
-    numero = 1
-    for par in coincidencias:
-        print(str(numero) + ". " + par[1].nombre + " (" + par[0] + ")")
-        numero = numero + 1
+        print("\n--- RESULTADOS PARA '" + criterio + "' ---")
+        numero = 1
+        for par in coincidencias:
+            print(str(numero) + ". " + par[1].nombre + " (" + par[0] + ")")
+            numero = numero + 1
 
-    entrada = input("\nNumero de la localidad: ").strip()
-    if not entrada.isdigit():
-        print("Debe ingresar un numero.")
-        return None
-    indice = int(entrada)
-    if indice < 0 or indice >= len(coincidencias):
-        print("Seleccion invalida.")
-        return None
+        entrada = input("\nNumero de la localidad: ").strip()
+        if not entrada.isdigit():
+            print("Debe ingresar un numero.")
+            return None
+        indice = int(entrada) - 1
+        if indice < 0 or indice >= len(coincidencias):
+            print("Seleccion invalida.")
+            return None
 
-    return coincidencias[indice]
+        return coincidencias[indice]
 
-def procesar_consulta_clima(self, nombre_municipio, localidad):
-    """Consulta el clima de una localidad, lo muestra y lo guarda."""
-    print("\nConsultando clima para " + localidad.nombre + "...")
-    clima = self.api.obtener_clima_actual(localidad.latitud, localidad.longitud)
+    def procesar_consulta_clima(self, nombre_municipio, localidad):
+        """Consulta el clima de una localidad, lo muestra y lo guarda."""
+        print("\nConsultando clima para " + localidad.nombre + "...")
+        clima = self.api.obtener_clima_actual(localidad.latitud, localidad.longitud)
 
-    if clima is None:
-        print("No se pudo obtener el clima. Verifique su conexion.")
-        return
+        if clima is None:
+            print("No se pudo obtener el clima. Verifique su conexion.")
+            return
 
-    print("\n==================================================")
-    print("  INFORMACION METEOROLOGICA - " + localidad.nombre.upper())
-    print("==================================================")
-    print("  - Municipio: " + nombre_municipio)
-    print("  - Localidad: " + localidad.nombre)
-    print("  - Coordenadas: Lat " + str(localidad.latitud) + ", Lon " + str(localidad.longitud))
-    print(clima)
-    print("==================================================")
+        print("\n==================================================")
+        print("  INFORMACION METEOROLOGICA - " + localidad.nombre.upper())
+        print("==================================================")
+        print("  - Municipio: " + nombre_municipio)
+        print("  - Localidad: " + localidad.nombre)
+        print("  - Coordenadas: Lat " + str(localidad.latitud) + ", Lon " + str(localidad.longitud))
+        print(clima)
+        print("==================================================")
 
-    self.estadisticas.registrar_consulta(nombre_municipio, localidad.nombre, clima)
+        self.estadisticas.registrar_consulta(nombre_municipio, localidad.nombre, clima)
