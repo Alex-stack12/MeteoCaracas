@@ -111,7 +111,7 @@ class ServicioMeteo:
         return None
 
         def decodificar_estado(self, codigo):
-        """Convierte el codigo del tiempo de la API en un texto en espanol."""
+            """Convierte el codigo del tiempo de la API en un texto en espanol."""
         codigos = {
             0: "Despejado",
             1: "Mayormente despejado",
